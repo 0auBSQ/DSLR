@@ -51,12 +51,21 @@ def get_q50(a):
 def get_q75(a):
 	return (get_percentile(a, .75))
 
-def get_std(a):
+def get_var(a):
 	a = a[~pd.isnull(a)]
 	if (len(a) < 2):
 		return (0)
 	m = get_mean(a) 
-	return (math.sqrt(sum([(ai - m)**2 for ai in a]) / (len(a) - 1)))
+	return (sum([(ai - m)**2 for ai in a]) / (len(a) - 1))
+
+def get_interquartile_range(a):
+	return (get_q75(a) - get_q25(a))
+
+def get_range(a):
+	return (get_max(a) - get_min(a))
+	
+def get_std(a):
+	return (math.sqrt(get_var(a)))
 
 def factorize_func(f, d):
 	ret = []
@@ -74,11 +83,14 @@ def main():
 		desc.loc["count"] = factorize_func(get_count, d)
 		desc.loc["mean"] = factorize_func(get_mean, d)
 		desc.loc["std"] = factorize_func(get_std, d)
+		desc.loc["var"] = factorize_func(get_var, d)
 		desc.loc["min"] = factorize_func(get_min, d)
 		desc.loc["25%"] = factorize_func(get_q25, d)
 		desc.loc["50%"] = factorize_func(get_q50, d)
 		desc.loc["75%"] = factorize_func(get_q75, d)
 		desc.loc["max"] = factorize_func(get_max, d)
+		desc.loc["iqr"] = factorize_func(get_interquartile_range, d)
+		desc.loc["range"] = factorize_func(get_range, d)
 		print (desc.T)
 	except Exception as e:
 		print ("error : {0}".format(e))

@@ -40,7 +40,7 @@ def	load_file(n):
 
 def main():
 	if (len(sys.argv) is not 2):
-		print ("usage : python histogram.py [dataset]")
+		print ("usage : python scatter_plot.py [dataset]")
 		sys.exit()
 	d = load_file(sys.argv[1])
 	try:

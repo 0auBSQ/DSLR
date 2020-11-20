@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def factorize(d, param):
+	# Transform dataframe parameter column to nan-free numpy list
 	dtmp = d[[param]].T.to_numpy()
 	return (dtmp[~pd.isnull(dtmp)])
 
@@ -34,16 +35,11 @@ def main():
 		i = 0
 		for (cn, cd) in d.iteritems():
 			if (cn != 'Hogwarts House' and i < 15):
-				s = cn
-				d1tmp = factorize(d1, s)
-				d2tmp = factorize(d2, s)
-				d3tmp = factorize(d3, s)
-				d4tmp = factorize(d4, s)
-				hists[i].hist(d1tmp, 20, alpha=1, color='blue', edgecolor='black', label='Ravenclaw')
-				hists[i].hist(d2tmp, 20, alpha=1, color='green', edgecolor='black', label='Slytherin')
-				hists[i].hist(d3tmp, 20, alpha=1, color='red', edgecolor='black', label='Gryffindor')
-				hists[i].hist(d4tmp, 20, alpha=1, color='yellow', edgecolor='black', label='Hufflepuff')
-				hists[i].set_title(s)
+				hists[i].hist(factorize(d1, cn), 20, alpha=1, color='blue', edgecolor='black', label='Ravenclaw')
+				hists[i].hist(factorize(d2, cn), 20, alpha=1, color='green', edgecolor='black', label='Slytherin')
+				hists[i].hist(factorize(d3, cn), 20, alpha=1, color='red', edgecolor='black', label='Gryffindor')
+				hists[i].hist(factorize(d4, cn), 20, alpha=1, color='yellow', edgecolor='black', label='Hufflepuff')
+				hists[i].set_title(cn)
 				i += 1
 		# Display histograms
 		fig.tight_layout()

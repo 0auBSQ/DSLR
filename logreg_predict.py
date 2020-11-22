@@ -41,13 +41,13 @@ def write_prediction(houses):
 
 def logreg_predict(args):
   d = load_file(args.dataset)
-  d = d.dropna(subset=['Herbology', 'Ancient Runes', 'Astronomy'])
+  d = d.fillna(0)
   v = load_file(args.values)
 
   X = np.array(d.values[:, [8, 12, 7]], dtype=float)
   X = normalize(X)
   X = np.insert(X, 0, 1, axis=1)
-  theta = np.array(v.values[:, 1:], dtype=float)
+  theta = np.array(v.values[:, 1:].T, dtype=float)
   
   model = Model()
   prediction = model.hypothesis(theta, X)

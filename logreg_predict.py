@@ -41,23 +41,31 @@ def write_prediction(houses):
 
 def logreg_predict(args):
   d = load_file(args.dataset)
-  d = d.fillna(0)
   v = load_file(args.values)
-
-  X = np.array(d.values[:, [8, 12, 7]], dtype=float)
-  X = normalize(X)
-  X = np.insert(X, 0, 1, axis=1)
-  theta = np.array(v.values[:, 1:].T, dtype=float)
   
-  model = Model()
-  prediction = model.hypothesis(theta, X)
-  
-  houses = np.argmax(prediction, axis=1)
-  houses_names = v.values[:, 0]
-  matching_houses = list(map(lambda v: houses_names[v], houses))
+  try:
+		# Sanitize dataset
+    d = d.fillna(0)
 
-  write_prediction(matching_houses)
-  print("houses.csv successfully written !")
+		# Normalize features
+    X = np.array(d.values[:, [8, 12, 7]], dtype=float)
+    X = np.array([normalize(t) for t in X.T]).T
+    X = np.insert(X, 0, 1, axis=1)
+    
+    theta = np.array(v.values[:, 1:].T, dtype=float)
+    
+    model = Model()
+    prediction = model.hypothesis(theta, X)
+
+		# Convert integers indexes to guild names)
+    houses = np.argmax(prediction, axis=1)
+    matching_houses = list(map(lambda v: model.i_feature[v], houses))
+
+    write_prediction(matching_houses)
+    print("houses.csv successfully written !")
+  except Exception as e:
+    print ("error : {0}".format(e))
+    sys.exit(-1)
 
 def main():
   parser = argparse.ArgumentParser()

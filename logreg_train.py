@@ -42,7 +42,7 @@ def logreg_train(args):
 		# Init model
 		if args.stochastic:
 			args.batch = 1
-		model = Model(args.iter, args.learning, args.batch > 0, args.batch, args.precision, args.visualizer)
+		model = Model(args.iter, args.learning, int(args.batch) > 0, args.batch, args.precision, args.visualizer)
 		
 		# Normalize features
 		X = np.array([normalize(t) for t in X.T]).T
@@ -65,7 +65,7 @@ def main():
 	parser.add_argument("dataset", help="select a valid dataset")
 	parser.add_argument("-i", "--iter", help="set the number of iterations (default to 1000)", default=1000)
 	parser.add_argument("-l", "--learning", help="set the learning rate (default to 0.1)", default=0.1)
-	parser.add_argument("-b", "--batch", help="set the number of batchs for batch gradient descent algorithm", default=0)
+	parser.add_argument("-b", "--batch", help="set the batch size for mini-batch gradient descent algorithm", default=0)
 	parser.add_argument("-s", "--stochastic", help="use the stochastic gradient descent algorithm", action="store_true")
 	parser.add_argument("-p", "--precision", help="show the precision", action="store_true")
 	parser.add_argument("-v", "--visualizer", help="show the resulting graphs", action="store_true")

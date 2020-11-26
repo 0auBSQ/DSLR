@@ -1,6 +1,12 @@
 # DSLR
 DataScience and Logistic Regression python scripts
 
+## Starring
+
+jergauth : https://github.com/jeremie-gauthier
+
+rmarracc : https://github.com/0auBSQ
+
 ## Packages
 
 - numpy
